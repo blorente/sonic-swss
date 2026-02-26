@@ -192,6 +192,6 @@ def add_debug_to_copts():
 
 def add_gcovpreload_to_linkopts():
     return select({
-        "//:enable_gcov": [],
+        "//:gcov": [],
         "//conditions:default": [],
     })

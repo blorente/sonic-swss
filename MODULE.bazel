@@ -26,6 +26,8 @@ bazel_dep(name = "rules_foreign_cc", version = "0.11.1")
 bazel_dep(name = "aspect_rules_py", version = "1.7.1")
 bazel_dep(name = "rules_cc", version = "0.2.14")
 bazel_dep(name = "bazel_lib", version = "3.1.1")
+bazel_dep(name = "bazel_skylib", version = "1.9.0")
+bazel_dep(name = "buildozer", version = "8.5.1")
 
 # Deps we need for starlarkified rulesets
 bazel_dep(name = "platforms", version = "1.0.0")
@@ -86,13 +88,13 @@ local_path_override(
     path = "../sonic-swss-common",
 )
 
-bazel_dep(name = "sonic-build-infra", version = "0.0.0")
+bazel_dep(name = "sonic-build-infra", version = "0.0.0", repo_name = "sonic_build_infra")
 local_path_override(
     module_name = "sonic-build-infra",
     path = "../sonic-build-infra",
 )
 
-register_toolchains("@sonic-build-infra//toolchains/gcc:host_gcc_toolchain")
+register_toolchains("@sonic_build_infra//toolchains/gcc:host_gcc_toolchain")
 
 bazel_dep(name = "sonic-sairedis", version = "0.0.0", repo_name = "sonic_sairedis")
 local_path_override(

@@ -1,3 +1,5 @@
+load("//bazel:flags.bzl", "ASAN_CXXOPTS", "ASAN_LINKOPTS", "TSAN_CXXOPTS", "USAN_CXXOPTS")
+
 package(default_visibility = ["//visibility:public"])
 
 DEFAULT_DEFINES = [
@@ -357,26 +359,15 @@ cc_test(
     srcs = [
         ":p4orch_tests_srcs",
     ],
-    copts = select({
-        "//:asan": [
-            "-fsanitize=address",
-            "-DASAN_ENABLED",
-        ],
-        "//:tsan": [
-            "-fsanitize=thread",
-        ],
-        "//:usan": [
-            "-fsanitize=undefined",
-        ],
+    copts = ASAN_CXXOPTS + TSAN_CXXOPTS + USAN_CXXOPTS + DEBUG_COPTS,
+    defines = select({
+        "//:asan": ["ASAN_ENABLED"],
         "//conditions:default": [],
-    }) + DEBUG_COPTS,
+    }),
     data = [
         "//cfgmgr:confg_mgr_data",
     ],
-    linkopts = ["-lpthread"] + select({
-        "//:asan": ["-lasan"],
-        "//conditions:default": [],
-    }),
+    linkopts = ["-lpthread"] + ASAN_LINKOPTS,
     local_defines = DEFAULT_DEFINES,
     dynamic_deps = [
       # TODO Move swsscommon here once we have made cc_shared_library work with rules_distroless.

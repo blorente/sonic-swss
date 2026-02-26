@@ -1,3 +1,4 @@
+load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
 load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
@@ -5,29 +6,39 @@ load("//:swss_helpers.bzl", "create_pkg_files_of_stripped_binaries")
 
 exports_files(["libswsscommon_consolidated.so"])
 
-config_setting(
+alias(
     name = "debug_mode",
-    values = {"compilation_mode": "dbg"},
+    actual = "@sonic_build_infra//:debug_enabled",
 )
 
-config_setting(
-    name = "enable_gcov",
-    define_values = {"enable_gcov": "true"},
+alias(
+    name = "gcov",
+    actual = "@sonic_build_infra//:gcov_enabled",
 )
 
-config_setting(
+alias(
     name = "asan",
-    define_values = {"asan": "true"},
+    actual = "@sonic_build_infra//:asan_enabled",
 )
 
-config_setting(
+alias(
     name = "tsan",
-    define_values = {"tsan": "true"},
+    actual = "@sonic_build_infra//:tsan_enabled",
+)
+
+alias(
+    name = "usan",
+    actual = "@sonic_build_infra//:usan_enabled",
+)
+
+bool_flag(
+    name = "portsyncd_tests_opts",
+    build_setting_default = False,
 )
 
 config_setting(
-    name = "usan",
-    define_values = {"usan": "true"},
+    name = "portsyncd_tests_opts_enabled",
+    flag_values = {":portsyncd_tests_opts": "True"},
 )
 
 # --- Configuration Files ---
@@ -162,7 +173,7 @@ pkg_filegroup(
         ":swss_python_scripts",
     ] + select(
         {
-            "//:enable_gcov": [
+            "//:gcov": [
                 ":gcovpreload",
                 ":lcov_cobertura",
             ],
