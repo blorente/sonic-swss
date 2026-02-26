@@ -8,6 +8,12 @@ common --registry=https://bcr.bazel.build
 # This is fine, because this flag is exclusively for tests.
 common --@sonic_swss_common//:alwayslink=False
 
+# @grpc builds against an old version of @boringssl which
+# both sets `-Wall` and `-Werror`, and emits warnings when built with a newer gcc.
+# We suppress those warnings.
+build --copt=-Wno-unused-parameter
+build --copt=-Wno-cast-function-type
+
 build:enable_gcov --@sonic_build_infra//:gcov=True
 build:asan --@sonic_build_infra//:asan=True
 build:tsan --@sonic_build_infra//:tsan=True
