@@ -3,6 +3,7 @@ load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("//:swss_helpers.bzl", "create_pkg_files_of_stripped_binaries")
+load("//bazel:cc_wrappers.bzl", "cc_binary", "cc_library", "cc_test")
 
 exports_files(["libswsscommon_consolidated.so"])
 

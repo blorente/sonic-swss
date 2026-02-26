@@ -1,3 +1,5 @@
+load("//bazel:cc_wrappers.bzl", "cc_binary", "cc_library", "cc_test")
+
 package(default_visibility = ["//visibility:public"])
 
 DEBUG_COPTS = select({
@@ -14,7 +16,7 @@ cc_library(
     srcs = ["shellcmd.h"],
     hdrs = ["shellcmd.h"],
     deps = [
-        "//bazel/swsscommon:swsscommon",
+        "//bazel/swsscommon",
     ],
 )
 
@@ -250,16 +252,16 @@ cc_library(
         "teammgr.h",
     ],
     deps = [
+        "//bazel/hiredis",
+        "//bazel/libnl3",
+        "//bazel/libnl3:libnl-genl-3",
+        "//bazel/libnl3:libnl-route-3",
+        "//bazel/saivs",
+        "//bazel/swsscommon",
+        "//bazel/zmq",
         "//cfgmgr:shellcmd",
         "//lib:lib_utils",
         "//orchagent:orchagent_lib",
         "//warmrestart:warmrestarthelper_lib",
-        "//bazel/hiredis:hiredis",
-        "//bazel/libnl3:libnl-genl-3",
-        "//bazel/libnl3:libnl-route-3",
-        "//bazel/libnl3:libnl3",
-        "//bazel/saivs:saivs",
-        "//bazel/swsscommon:swsscommon",
-        "//bazel/zmq:zmq",
     ],
 )

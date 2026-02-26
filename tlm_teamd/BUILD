@@ -1,4 +1,5 @@
 load("//:swss_helpers.bzl", "add_debug_to_copts")
+load("//bazel:cc_wrappers.bzl", "cc_binary", "cc_library", "cc_test")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -13,10 +14,10 @@ cc_binary(
         "DRAIN_MMU_WHEN_APPLYING_BUFFER_CONFIG",
     ],
     deps = [
-        "//lib:lib_utils",
-        "//bazel/hiredis:hiredis",
-        "//bazel/jansson:jansson",
+        "//bazel/hiredis",
+        "//bazel/jansson",
         "//bazel/libteam:libteamdctl",
-        "//bazel/swsscommon:swsscommon",
+        "//bazel/swsscommon",
+        "//lib:lib_utils",
     ],
 )

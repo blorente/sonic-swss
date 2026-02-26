@@ -1,4 +1,5 @@
 load("//:swss_helpers.bzl", "add_debug_to_copts", "add_gcovpreload_to_linkopts")
+load("//bazel:cc_wrappers.bzl", "cc_binary", "cc_library", "cc_test")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -7,10 +8,10 @@ filegroup(
     srcs = [
         "gearboxutils.cpp",
         "gearboxutils.h",
-        "subintf.cpp",
-        "subintf.h",
         "recorder.cpp",
         "recorder.h",
+        "subintf.cpp",
+        "subintf.h",
     ],
     visibility = ["//visibility:public"],
 )
@@ -19,18 +20,18 @@ cc_library(
     name = "lib_utils",
     srcs = [
         "gearboxutils.cpp",
-        "subintf.cpp",
         "recorder.cpp",
+        "subintf.cpp",
     ],
     hdrs = [
         "gearboxutils.h",
-        "subintf.h",
         "recorder.h",
+        "subintf.h",
     ],
     copts = add_debug_to_copts(),
     linkopts = add_gcovpreload_to_linkopts(),
     deps = [
-        "//bazel/swsscommon:swsscommon",
+        "//bazel/swsscommon",
     ],
 )
 
@@ -40,6 +41,6 @@ cc_library(
     copts = add_debug_to_copts(),
     linkopts = add_gcovpreload_to_linkopts(),
     deps = [
-        "//bazel/swsscommon:swsscommon",
+        "//bazel/swsscommon",
     ],
 )

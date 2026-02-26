@@ -1,3 +1,5 @@
+load("//bazel:cc_wrappers.bzl", "cc_binary", "cc_library", "cc_test")
+
 package(default_visibility = ["//visibility:public"])
 
 cc_library(
@@ -8,9 +10,9 @@ cc_library(
         "-Wno-error=reorder",
     ],
     deps = [
+        "//bazel/libnl3",
         "//bazel/libnl3:libnl-route-3",
-        "//bazel/libnl3:libnl3",
-        "//bazel/swsscommon:swsscommon",
+        "//bazel/swsscommon",
     ],
 )
 
@@ -22,8 +24,8 @@ cc_library(
         "-Wno-error=reorder",
     ],
     deps = [
+        "//bazel/libnl3",
         "//bazel/libnl3:libnl-route-3",
-        "//bazel/libnl3:libnl3",
-        "//bazel/swsscommon:swsscommon",
+        "//bazel/swsscommon",
     ],
 )

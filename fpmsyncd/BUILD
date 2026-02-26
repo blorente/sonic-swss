@@ -1,4 +1,5 @@
 load("//:swss_helpers.bzl", "add_debug_to_copts")
+load("//bazel:cc_wrappers.bzl", "cc_binary", "cc_library", "cc_test")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -23,11 +24,11 @@ cc_library(
         "-Wno-reorder",
     ] + add_debug_to_copts(),
     deps = [
-        "//warmrestart:warmrestarthelper_lib",
-        "//bazel/hiredis:hiredis",
+        "//bazel/hiredis",
+        "//bazel/libnl3",
         "//bazel/libnl3:libnl-route-3",
-        "//bazel/libnl3:libnl3",
-        "//bazel/swsscommon:swsscommon",
+        "//bazel/swsscommon",
+        "//warmrestart:warmrestarthelper_lib",
     ],
 )
 
@@ -42,10 +43,10 @@ cc_binary(
         "-Wno-reorder",
     ] + add_debug_to_copts(),
     deps = [
-        "//warmrestart:warmrestarthelper_lib",
-        "//bazel/hiredis:hiredis",
+        "//bazel/hiredis",
+        "//bazel/libnl3",
         "//bazel/libnl3:libnl-route-3",
-        "//bazel/libnl3:libnl3",
-        "//bazel/swsscommon:swsscommon",
+        "//bazel/swsscommon",
+        "//warmrestart:warmrestarthelper_lib",
     ],
 )

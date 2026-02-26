@@ -1,3 +1,5 @@
+load("//bazel:cc_wrappers.bzl", "cc_binary", "cc_library", "cc_test")
+
 package(default_visibility = ["//visibility:public"])
 
 cc_library(

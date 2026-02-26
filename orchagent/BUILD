@@ -1,3 +1,4 @@
+load("//bazel:cc_wrappers.bzl", "cc_binary", "cc_library", "cc_test")
 load("//bazel:flags.bzl", "ASAN_CXXOPTS", "ASAN_LINKOPTS", "TSAN_CXXOPTS", "USAN_CXXOPTS")
 
 package(default_visibility = ["//visibility:public"])
@@ -23,12 +24,12 @@ filegroup(
         "copporch.cpp",
         "countercheckorch.cpp",
         "crmorch.cpp",
+        "dash/dashaclgroupmgr.cpp",
+        "dash/dashaclorch.cpp",
         "dash/dashorch.cpp",
         "dash/dashrouteorch.cpp",
-        "dash/dashvnetorch.cpp",
-        "dash/dashaclorch.cpp",
-        "dash/dashaclgroupmgr.cpp",
         "dash/dashtagmgr.cpp",
+        "dash/dashvnetorch.cpp",
         "dash/pbutils.cpp",
         "debug_counter/debug_counter.cpp",
         "debug_counter/drop_counter.cpp",
@@ -120,12 +121,12 @@ filegroup(
         "copporch.h",
         "countercheckorch.h",
         "crmorch.h",
+        "dash/dashaclgroupmgr.h",
+        "dash/dashaclorch.h",
         "dash/dashorch.h",
         "dash/dashrouteorch.h",
-        "dash/dashvnetorch.h",
-        "dash/dashaclorch.h",
-        "dash/dashaclgroupmgr.h",
         "dash/dashtagmgr.h",
+        "dash/dashvnetorch.h",
         "dash/pbutils.h",
         "dash/taskworker.h",
         "debug_counter/debug_counter.h",
@@ -235,12 +236,12 @@ cc_library(
     linkopts = ["-lpthread"],
     local_defines = DEFAULT_DEFINES,
     deps = [
-        "//bazel/saimetadata:saimeta",
-        "//bazel/saimetadata:saimetadata",
-        "//bazel/swsscommon:swsscommon",
-        "//bazel/zmq:zmq",
-        "//bazel/dashapi:dashapi",
+        "//bazel/dashapi",
         "//bazel/dashapi:dashapi_proto",
+        "//bazel/saimetadata",
+        "//bazel/saimetadata:saimeta",
+        "//bazel/swsscommon",
+        "//bazel/zmq",
     ],
 )
 
@@ -257,18 +258,18 @@ cc_library(
     linkopts = ["-lpthread"],
     local_defines = DEFAULT_DEFINES,
     deps = [
-        "//bazel/hiredis:hiredis",
+        "//bazel/dashapi",
+        "//bazel/dashapi:dashapi_proto",
+        "//bazel/hiredis",
+        "//bazel/libnl3",
         "//bazel/libnl3:libnl-genl-3",
         "//bazel/libnl3:libnl-nf-3",
         "//bazel/libnl3:libnl-route-3",
-        "//bazel/libnl3:libnl3",
+        "//bazel/saimetadata",
         "//bazel/saimetadata:saimeta",
-        "//bazel/saimetadata:saimetadata",
-        "//bazel/sairedis:sairedis",
-        "//bazel/swsscommon:swsscommon",
-        "//bazel/zmq:zmq",
-        "//bazel/dashapi:dashapi",
-        "//bazel/dashapi:dashapi_proto",
+        "//bazel/sairedis",
+        "//bazel/swsscommon",
+        "//bazel/zmq",
     ],
 )
 
@@ -360,18 +361,18 @@ cc_test(
         ":p4orch_tests_srcs",
     ],
     copts = ASAN_CXXOPTS + TSAN_CXXOPTS + USAN_CXXOPTS + DEBUG_COPTS,
+    data = [
+        "//cfgmgr:confg_mgr_data",
+    ],
     defines = select({
         "//:asan": ["ASAN_ENABLED"],
         "//conditions:default": [],
     }),
-    data = [
-        "//cfgmgr:confg_mgr_data",
+    dynamic_deps = [
+        # TODO Move swsscommon here once we have made cc_shared_library work with rules_distroless.
     ],
     linkopts = ["-lpthread"] + ASAN_LINKOPTS,
     local_defines = DEFAULT_DEFINES,
-    dynamic_deps = [
-      # TODO Move swsscommon here once we have made cc_shared_library work with rules_distroless.
-    ],
     deps = [
         # do not sort
         # Order matters, this needs to come before anything that imports swsscommon transitively
@@ -380,12 +381,12 @@ cc_test(
         "//tests/mock_tests:fake_response_publisher_lib",
         "@com_google_googletest//:gtest",
         "@com_google_googletest//:gtest_main",
-        "//bazel/hiredis:hiredis",
+        "//bazel/hiredis",
         "//bazel/saimetadata:saimeta",
-        "//bazel/saimetadata:saimetadata",
-        "//bazel/sairedis:sairedis",
-        "//bazel/zmq:zmq",
-        "//bazel/dashapi:dashapi",
+        "//bazel/saimetadata",
+        "//bazel/sairedis",
+        "//bazel/zmq",
+        "//bazel/dashapi",
     ] + select({
         "//:asan": [
             "//lib:asan",
@@ -425,8 +426,8 @@ cc_binary(
     copts = DEBUG_COPTS,
     local_defines = DEFAULT_DEFINES,
     deps = [
-        "//bazel/hiredis:hiredis",
-        "//bazel/swsscommon:swsscommon",
+        "//bazel/hiredis",
+        "//bazel/swsscommon",
     ],
 )
 
@@ -437,8 +438,8 @@ cc_binary(
     linkopts = ["-lpthread"],
     local_defines = DEFAULT_DEFINES,
     deps = [
-        "//bazel/hiredis:hiredis",
-        "//bazel/swsscommon:swsscommon",
+        "//bazel/hiredis",
+        "//bazel/swsscommon",
     ],
 )
 
@@ -458,15 +459,15 @@ cc_library(
         "//conditions:default": ["-g -DNDEBUG"],
     }),
     deps = [
-        "//bazel/hiredis:hiredis",
+        "//bazel/hiredis",
+        "//bazel/libnl3",
         "//bazel/libnl3:libnl-genl-3",
         "//bazel/libnl3:libnl-route-3",
-        "//bazel/libnl3:libnl3",
+        "//bazel/saimetadata",
         "//bazel/saimetadata:saimeta",
-        "//bazel/saimetadata:saimetadata",
-        "//bazel/saivs:saivs",
-        "//bazel/swsscommon:swsscommon",
-        "//bazel/zmq:zmq",
+        "//bazel/saivs",
+        "//bazel/swsscommon",
+        "//bazel/zmq",
         "//lib:lib_utils",
     ],
 )
@@ -487,8 +488,8 @@ cc_library(
     srcs = ["request_parser.cpp"],
     copts = DEBUG_COPTS,
     deps = [
-        "//orchagent:orchagent_lib",
         "//lib:lib_utils",
+        "//orchagent:orchagent_lib",
     ],
 )
 
@@ -505,12 +506,12 @@ cc_library(
         "copporch.cpp",
         "countercheckorch.cpp",
         "crmorch.cpp",
+        "dash/dashaclgroupmgr.cpp",
+        "dash/dashaclorch.cpp",
         "dash/dashorch.cpp",
         "dash/dashrouteorch.cpp",
-        "dash/dashvnetorch.cpp",
-        "dash/dashaclorch.cpp",
-        "dash/dashaclgroupmgr.cpp",
         "dash/dashtagmgr.cpp",
+        "dash/dashvnetorch.cpp",
         "dash/pbutils.cpp",
         "debug_counter/debug_counter.cpp",
         "debug_counter/drop_counter.cpp",
