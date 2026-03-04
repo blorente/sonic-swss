@@ -1,12 +1,17 @@
 package(default_visibility = ["//visibility:public"])
 
+DEBUG_DEFINES = select({
+    "//:debug_mode": ["DEBUG"],
+    "//conditions:default": ["NDEBUG"],
+})
+
 DEFAULT_DEFINES = [
     "DRAIN_MMU_WHEN_APPLYING_BUFFER_CONFIG",
-]
+] + DEBUG_DEFINES
 
 DEBUG_COPTS = select({
-    "//:debug_mode": ["-ggdb -DDEBUG"],
-    "//conditions:default": ["-g -DNDEBUG"],
+    "//:debug_mode": ["-ggdb"],
+    "//conditions:default": ["-g"],
 })
 
 filegroup(
