@@ -80,6 +80,7 @@ apt.install(
     suites = [
         "bookworm",
         "bookworm-updates",
+        "bookworm-security",
     ],
 )
 use_repo(apt, "bookworm")
