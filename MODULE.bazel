@@ -66,10 +66,6 @@ apt.install(
         "libzmq5",
         "libjansson4",
         "libjansson-dev",
-        "libteam5",
-        "libteamdctl0",
-        "libteam-dev",
-
         "libyang2-dev",
 
         # TODO: These are just to debug //tests/mock_tests:tests, we should remove them once it works.
@@ -115,4 +111,16 @@ bazel_dep(name = "sonic-dash-api", version = "0.0.0", repo_name = "sonic_dash_ap
 local_path_override(
     module_name = "sonic-dash-api",
     path = "../sonic-dash-api",
+)
+
+bazel_dep(name = "libnl3", version = "3.7.0")
+local_path_override(
+    module_name = "libnl3",
+    path = "../sonic-buildimage/src/libnl3",
+)
+
+bazel_dep(name = "libteam", version = "0.0.0", repo_name = "libteam")
+local_path_override(
+    module_name = "libteam",
+    path = "../sonic-buildimage/src/libteam",
 )

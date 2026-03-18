@@ -2,10 +2,10 @@ package(default_visibility = ["//visibility:public"])
 
 alias(
     name = "libteam",
-    actual = "@bookworm//libteam-dev:libteam",
+    actual = "@libteam//:libteam",
 )
 
 alias(
     name = "libteamdctl",
-    actual = "@bookworm//libteam-dev:libteam",
+    actual = "@libteam//:libteamdctl",
 )
