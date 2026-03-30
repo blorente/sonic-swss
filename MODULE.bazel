@@ -119,8 +119,16 @@ local_path_override(
     path = "../sonic-buildimage/src/libnl3",
 )
 
+# TODO BL: replace with new version of rules_m4 when this merges:
+#  https://github.com/jmillikin/rules_m4/pull/23
+local_path_override(
+    module_name = "rules_m4",
+    path = "../rules_m4",
+)
+
 bazel_dep(name = "libteam", version = "0.0.0", repo_name = "libteam")
 local_path_override(
     module_name = "libteam",
     path = "../sonic-buildimage/src/libteam",
 )
+
